@@ -2,7 +2,7 @@ import pygame
 from pygame.draw import *
 from math import ceil
 
-screen = pygame.display.set_mode((800, 950))
+screen = pygame.display.set_mode((900, 1000))
 
 
 def main():
@@ -32,29 +32,29 @@ def draw_environment(width, height):
     """
     sky_width = width
     sky_height = ceil(0.5 * height)
-    draw_sky((59, 59, 94), sky_width, sky_height)
+    _draw_sky((59, 59, 94), sky_width, sky_height)
 
     moon_x = ceil(0.9 * width)
     moon_y = ceil(0.1 * height)
     moon_size = ceil(0.1 * width)
-    draw_moon((250, 250, 250), moon_x, moon_y, moon_size)
+    _draw_moon((250, 250, 250), moon_x, moon_y, moon_size)
 
     first_cloud_x = ceil(0.4 * width)
     first_cloud_y = ceil(0.1 * height)
     first_cloud_width = ceil(0.6 * height)
     first_cloud_height = ceil(0.07 * height)
-    draw_cloud((41, 41, 51), first_cloud_x, first_cloud_y,
+    _draw_cloud((41, 41, 51), first_cloud_x, first_cloud_y,
                first_cloud_width, first_cloud_height)
 
     second_cloud_x = ceil(0.1 * width)
     second_cloud_y = ceil(0.01 * height)
     second_cloud_width = ceil(0.4 * height)
     second_cloud_height = ceil(0.06 * height)
-    draw_cloud((40, 15, 0), second_cloud_x, second_cloud_y,
+    _draw_cloud((40, 15, 0), second_cloud_x, second_cloud_y,
                second_cloud_width, second_cloud_height)
 
 
-def draw_sky(color, sky_width, sky_height):
+def _draw_sky(color, sky_width, sky_height):
     """
     Draw the sky
     :param color: Sky color
@@ -65,7 +65,7 @@ def draw_sky(color, sky_width, sky_height):
     rect(screen, color, (0, 0, sky_width, sky_height))
 
 
-def draw_moon(color, moon_x, moon_y, moon_size):
+def _draw_moon(color, moon_x, moon_y, moon_size):
     """
     Draw the Moon
     :param color: Moon color
@@ -77,7 +77,7 @@ def draw_moon(color, moon_x, moon_y, moon_size):
     circle(screen, color, (moon_x, moon_y), moon_size)
 
 
-def draw_cloud(color, x, y, width, height):
+def _draw_cloud(color, x, y, width, height):
     """
     Draw a cloud
     :param color: Cloud color
@@ -99,107 +99,85 @@ def draw_house(x, y, width, height):
     :param height: Max house height
     :return: None
     """
-    draw_walls((51, 26, 0), 50, 200, 350, 600)
-    rect(screen, (51, 26, 0), (50, 200, 350, 600))
-    d = 35
-    for _ in range(4):
-        rect(screen, (153, 102, 0), (50 + d, 225, 50, 150))
-        d += 75
+    walls_color = (51, 26, 0)
+    walls_x = x+ceil(0.1*width)
+    walls_y = y+ceil(0.3*height)
+    walls_width = ceil(0.8*width)
+    walls_height = ceil(0.7*height)
+    _draw_walls(walls_color, walls_x, walls_y, walls_width, walls_height)
 
-    d = 20
-    for i in range(3):
-        if i == 2:
-            rect(screen, (230, 230, 0), (50 + d, 650, 70, 80))
-            d += 120
-        else:
-            rect(screen, (77, 0, 0), (50 + d, 650, 70, 80))
-            d += 120
+    balcony_color = (26, 13, 0)
+    balcony_x = x
+    balcony_y = y + ceil(0.6 * height)
+    balcony_width = width
+    balcony_height = ceil(0.1 * height)
+    _draw_balcony(balcony_color, balcony_x, balcony_y,
+                  balcony_width, balcony_height)
 
-    rect(screen, (26, 0, 0), (10, 400, 430, 60))
+    roof_color = (26, 13, 0)
+    roof_x = x
+    roof_y = y + ceil(0.2 * height)
+    roof_width = width
+    roof_height = ceil(0.1 * height)
+    _draw_roof(roof_color, roof_x, roof_y, roof_width, roof_height)
 
-    d = 0
-    for i in range(6):
-        rect(screen, (26, 0, 0), (25 + d, 300, 60, 100), 15)
-        d += 68
 
-    rect(screen, (38, 38, 38), (150, 115, 35, 85))
-    polygon(screen, (16, 16, 16), [(75, 175), (375, 175),
-                                   (440, 225), (10, 225)])
-
-def draw_walls(color, x, y, width, height):
+def _draw_walls(color, x, y, width, height):
     rect(screen, color, (x, y, width, height))
 
-    x_upper_windows = ceil(1.1 * width)
-    y_upper_windows = height
-    width_upper_windows = ceil(((width - (x_upper_windows - width) * 2) / 4) * 0.9)
-    height_upper_windows = ceil(0.4 * height)
-    distance_between_upper = ceil(((width - (x_upper_windows - width) * 2) / 4) * 0.1)
-
-    draw_window((153, 102, 0), x_upper_windows, y_upper_windows,
+    x_upper_windows = ceil(1.1 * x)
+    y_upper_windows = y
+    w = (width - ceil(0.1 * x) * 2) / 4 / 100
+    width_upper_windows = ceil(60 * w)
+    height_upper_windows = ceil(0.3 * height)
+    distance_between_upper = ceil(110 * w)
+    _draw_window((153, 102, 0), x_upper_windows, y_upper_windows,
                 width_upper_windows, height_upper_windows, distance_between_upper, 4)
 
-    x_lower_windows = ceil(1.2 * width)
-    y_lower_windows = ceil(1.65 * height)
-    width_lower_windows = ceil(((width - (x_lower_windows - width) * 2) / 3) * 0.9)
+    x_lower_windows = ceil(1.3 * x)
+    y_lower_windows = ceil(2 * y)
+    w = (width - ceil(0.6 * x) * 2) / 3 / 100
+    width_lower_windows = ceil(100 * w)
     height_lower_windows = ceil(0.2 * height)
-    distance_between_lower = ceil(((width - (x_lower_windows - width) * 2) / 3) * 0.1)
+    distance_between_lower = ceil(130 * w)
+    _draw_window((230, 230, 0), x_lower_windows, y_lower_windows,
+                 width_lower_windows, height_lower_windows, distance_between_lower, 3)
 
-    draw_window((230, 230, 0), x_lower_windows, y_lower_windows,
-                width_lower_windows, height_lower_windows, distance_between_lower, 3)
 
-def draw_window(color, x, y, width, height, distance_between, num_of_window):
-    """
-    Draw a window
-    :param color: Window color
-    :param distance_between: Distance between windows
-    :param num_of_window: Num of the windows
-    :param x: X coordinate upper left point of window
-    :param y: Y coordinate upper left point of window
-    :param weight: Window weight
-    :param height: Window height
-    :return: None
-    """
+def _draw_window(color, x, y, width, height, distance_between, num_of_window):
     for _ in range(num_of_window):
-        rect(screen, color, (x+distance_between, y, width, height))
-        distance_between += distance_between
+        rect(screen, color, (x, y, width, height))
+        x += distance_between
 
 
-def draw_balcony(color, x, y, weight, height, w):
-    """
-    Draw balcony
-    :param color: Balcony color
-    :param x: X lower left coordinate of balcony
-    :param y: Y lower left coordinate of balcony
-    :param weight: Max balcony weight
-    :param height: Max balcony height
-    :param w: Partition thickness
-    :return: None
-    """
-    rect(screen, color, (x, y, weight, ceil(0.2*height)))
+def _draw_balcony(color, x, y, width, height):
 
-    #Сам куб перегородки
-    partition_cube = height/6
+    rect(screen, color, (x, y, width, -height))
 
-    d = 0
-    for i in range(6):
-        rect(screen, color, (x+w/2, y-100, partition_cube - w, ceil(0.8*height)), w)
-        d += partition_cube + w
+    partition_x = x
+    partition_y = y
+    width_partition_cube = width // 6
+    height_partition = 2 * height
 
-def draw_roof(color, x, y):
-    polygon(screen, (16, 16, 16), [(75, 175), (375, 175),
-                                   (440, 225), (10, 225)])
-    rect(screen, color, (150, 115, 35, 85))
+    for _ in range(6):
+        rect(screen, color, (partition_x, partition_y,
+                                   width_partition_cube, -height_partition), 20)
+        partition_x += width_partition_cube
+
+
+def _draw_roof(color, x, y, width, height):
+    point_1 = (x + ceil(0.05 * width), y)
+    point_2 = (x + (width - ceil(0.05 * width)), y)
+    point_3 = (x + width, y + height)
+    point_4 = (x, y + height)
+    polygon(screen, color, [point_1,  point_2, point_3, point_4])
+
+    rect(screen, color, (x+ceil(0.3*width), y,
+                         ceil(0.1*width), -ceil(2*height)))
 
 
 def draw_ghost(x, y, width, height):
-    """
-    Draw ghost
-    :param x: X coordinate lower left point of ghost
-    :param y: Y coordinate upper left point of ghost
-    :param width: Max ghost width
-    :param height: Max ghost height
-    :return: None
-    """
+
     circle(screen, (217, 217, 217), (550, 700), 40)
     polygon(screen, (217, 217, 217), [(580, 675), (650, 880), (450, 880), (520, 675)])
 
@@ -216,7 +194,7 @@ def draw_ghost(x, y, width, height):
         d += 30
 
 
-draw_environment(800, 950)
-draw_house(10, 10, 1, 1)
+draw_environment(900, 1000)
+draw_house(50, 100, 500, 800)
 draw_ghost(1, 1, 1, 1)
 main()
