@@ -5,7 +5,7 @@ from random import randint
 pygame.init()
 
 # Display settings
-FPS = 1
+FPS = 10
 SCREEN_WIDTH = 1400
 SCREEN_HEIGHT = 900
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -65,92 +65,104 @@ def new_ball():
     variant = randint(1, 8)
     variant_back = randint(1, 3)
     kontact_position = 0
-    speed_2_coordinate = 12
-    speed_1_coordinate = 8
+    speed_2_coordinate = 8
+    speed_1_coordinate = 6
+    c_1 = 0
 
-    for i in range(300):
+    for i in range(200):
         screen.fill(BLACK)
         draw_point_counter(screen, counter, text_size,
                            point_counter_x, point_counter_y)
-        if x-r > 0 and x+r < SCREEN_WIDTH and y-r > 0 and y+r < SCREEN_HEIGHT:
-            if variant == 1:
-                y -= speed_1_coordinate
-            elif variant == 2:
-                y -= speed_2_coordinate
-                x += speed_2_coordinate
-            elif variant == 3:
-                x += speed_1_coordinate
-            elif variant == 4:
-                y += speed_2_coordinate
-                x += speed_2_coordinate
-            elif variant == 5:
-                y += speed_1_coordinate
-            elif variant == 6:
-                y += speed_2_coordinate
-                x -= speed_2_coordinate
-            elif variant == 7:
-                x -= speed_1_coordinate
-            elif variant == 8:
-                y -= speed_2_coordinate
-                x -= speed_2_coordinate
+        if x - r < 10 or x + r > SCREEN_WIDTH-10 or y - r < 10 or y + r > SCREEN_HEIGHT-10:
+            if y - r < 10:
+                kontact_position = 1
+            elif x + r > SCREEN_WIDTH-10:
+                kontact_position = 2
+            elif y + r > SCREEN_HEIGHT-10:
+                kontact_position = 3
+            elif x - r < 10:
+                kontact_position = 4
+            break
+        elif variant == 1:
+            y -= speed_1_coordinate
+        elif variant == 2:
+            y -= speed_2_coordinate
+            x += speed_2_coordinate
+        elif variant == 3:
+            x += speed_1_coordinate
+        elif variant == 4:
+            y += speed_2_coordinate
+            x += speed_2_coordinate
+        elif variant == 5:
+            y += speed_1_coordinate
+        elif variant == 6:
+            y += speed_2_coordinate
+            x -= speed_2_coordinate
+        elif variant == 7:
+            x -= speed_1_coordinate
+        elif variant == 8:
+            y -= speed_2_coordinate
+            x -= speed_2_coordinate
         pygame.draw.circle(screen, color, (x, y), r)
         pygame.display.update()
 
-
-    if y - r <= 0:
-        kontact_position = 1
-    elif x + r >= SCREEN_WIDTH:
-        kontact_position = 2
-    elif y + r >= SCREEN_HEIGHT:
-        kontact_position = 3
-    elif x - r <= 0:
-        kontact_position = 4
-
-
-    if kontact_position > 0:
-        for i in range(200):
-            screen.fill(BLACK)
-            draw_point_counter(screen, counter, text_size,
-                               point_counter_x, point_counter_y)
-            if x - r >= -5 and x + r <= SCREEN_WIDTH+5 and y - r >= -5 and y + r <= SCREEN_HEIGHT+5:
-                if kontact_position == 1:
-                    if variant_back == 1:
-                        y += speed_2_coordinate
-                        x -= speed_2_coordinate
-                    if variant_back == 2:
-                        y += speed_1_coordinate
-                    if variant_back == 3:
-                         y += speed_2_coordinate
-                         x += speed_2_coordinate
-                if kontact_position == 2:
-                    if variant_back == 1:
-                        y -= speed_2_coordinate
-                        x -= speed_2_coordinate
-                    if variant_back == 2:
-                        x -= speed_1_coordinate
-                    if variant_back == 3:
-                        y += speed_2_coordinate
-                        x -= speed_2_coordinate
-                if kontact_position == 3:
-                    if variant_back == 1:
-                        y -= speed_2_coordinate
-                        x += speed_2_coordinate
-                    if variant_back == 2:
-                        y -= speed_1_coordinate
-                    if variant_back == 3:
-                        y -= speed_2_coordinate
-                        x -= speed_2_coordinate
-                if kontact_position == 4:
-                    if variant_back == 1:
-                        y += speed_2_coordinate
-                        x += speed_2_coordinate
-                    if variant_back == 2:
-                        x += speed_1_coordinate
-                    if variant_back == 3:
-                        y -= speed_2_coordinate
-                        x += speed_2_coordinate
-            pygame.draw.circle(screen, color, (x, y), r)
-            pygame.display.update()
+    for i in range(800):
+        screen.fill(BLACK)
+        draw_point_counter(screen, counter, text_size,
+                           point_counter_x, point_counter_y)
+        if i > 30 and c_1 < 1:
+            if x - r < 10 or x + r > SCREEN_WIDTH - 10 or y - r < 10 or y + r > SCREEN_HEIGHT - 10:
+                if y - r < 10:
+                    kontact_position = 1
+                elif x + r > SCREEN_WIDTH - 10:
+                    kontact_position = 2
+                elif y + r > SCREEN_HEIGHT - 10:
+                    kontact_position = 3
+                elif x - r < 10:
+                    kontact_position = 4
+                c_1 += 1
+                continue
+        if x - r < 10 or x + r > SCREEN_WIDTH - 10 or y - r < 10 or y + r > SCREEN_HEIGHT - 10:
+            c_1 -= 1
+            variant_back = randint(1, 3)
+        if kontact_position == 1:
+            if variant_back == 1:
+                y += speed_2_coordinate
+                x -= speed_2_coordinate
+            if variant_back == 2:
+                y += speed_1_coordinate
+            if variant_back == 3:
+                y += speed_2_coordinate
+                x += speed_2_coordinate
+        if kontact_position == 2:
+            if variant_back == 1:
+                y -= speed_2_coordinate
+                x -= speed_2_coordinate
+            if variant_back == 2:
+                x -= speed_1_coordinate
+            if variant_back == 3:
+                y += speed_2_coordinate
+                x -= speed_2_coordinate
+        if kontact_position == 3:
+            if variant_back == 1:
+                y -= speed_2_coordinate
+                x += speed_2_coordinate
+            if variant_back == 2:
+                y -= speed_1_coordinate
+            if variant_back == 3:
+                y -= speed_2_coordinate
+                x -= speed_2_coordinate
+        if kontact_position == 4:
+            if variant_back == 1:
+                y += speed_2_coordinate
+                x += speed_2_coordinate
+            if variant_back == 2:
+                x += speed_1_coordinate
+            if variant_back == 3:
+                y -= speed_2_coordinate
+                x += speed_2_coordinate
+        pygame.draw.circle(screen, color, (x, y), r)
+        pygame.display.update()
 
 def click(event_pos):
     """
