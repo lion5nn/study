@@ -44,7 +44,7 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     point_counter(click(event.pos))
-        draw_point_counter(screen, counter, 30, 500, 50)
+        draw_point_counter(screen, counter, 40, 30, 30)
         new_ball()
         pygame.display.update()
         screen.fill(BLACK)
@@ -87,6 +87,14 @@ def point_counter(click_result):
 
 
 def draw_point_counter(surf, text, size, x_pos, y_pos):
+    """
+    It paints the point counter on a display
+    :param surf: Display surface
+    :param text: Text for paint
+    :param size: Text size
+    :param x_pos: Left point of text rect
+    :param y_pos: Upper point of text rect
+    """
     font = pygame.font.Font(font_name, size)
     text_surface = font.render(str(text), True, WHITE)
     surf.blit(text_surface, (x_pos, y_pos))
