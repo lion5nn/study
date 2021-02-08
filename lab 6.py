@@ -1,12 +1,11 @@
 import pygame
-from pygame.draw import *
 from random import randint
 
 # It is pygame initialization
 pygame.init()
 
 # Display settings
-FPS = 2
+FPS = 1
 SCREEN_WIDTH = 1400
 SCREEN_HEIGHT = 900
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -22,7 +21,12 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
 
-# Point counter
+# Point counter settings
+point_counter_x = 30
+point_counter_y = 30
+text_size = 40
+
+# Create new counter every game
 counter = 0
 
 # Text name
@@ -44,7 +48,6 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     point_counter(click(event.pos))
-        draw_point_counter(screen, counter, 40, 30, 30)
         new_ball()
         pygame.display.update()
         screen.fill(BLACK)
@@ -59,13 +62,39 @@ def new_ball():
     y = randint(SCREEN_HEIGHT//100*10, SCREEN_HEIGHT//100*90)
     r = randint(SCREEN_WIDTH//100*2, SCREEN_WIDTH//100*6)
     color = COLORS[randint(0, 5)]
-    pygame.draw.circle(screen, color, (x, y), r)
+    variant = randint(1, 8)
+    for i in range(100):
+        screen.fill(BLACK)
+        draw_point_counter(screen, counter, text_size,
+                           point_counter_x, point_counter_y)
+        if variant == 1:
+            y -= 4
+        elif variant == 2:
+            y -= 2
+            x += 2
+        elif variant == 3:
+            x += 4
+        elif variant == 4:
+            y += 2
+            x += 2
+        elif variant == 5:
+            y += 4
+        elif variant == 6:
+            y += 2
+            x -= 2
+        elif variant == 7:
+            x -= 4
+        elif variant == 8:
+            y -= 2
+            x -= 2
+        pygame.draw.circle(screen, color, (x, y), r)
+        pygame.display.update()
 
 
 def click(event_pos):
     """
     It return True if player clicks in a circle
-    :param event: event.pos
+    :param event_pos: event.pos
     :return: True or False
     """
     clicked_pos_x, clicked_pos_y = event_pos
