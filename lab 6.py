@@ -5,7 +5,7 @@ from random import randint
 pygame.init()
 
 # Display settings
-FPS = 10
+FPS = 30
 SCREEN_WIDTH = 1400
 SCREEN_HEIGHT = 900
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -55,19 +55,20 @@ def main():
 
 def new_ball():
     """
-    It draws random circle at random point
+    It draws random circle at random point and move him
     """
     global x, y, r
-    x = randint(SCREEN_WIDTH//100*30, SCREEN_WIDTH//100*70)
-    y = randint(SCREEN_HEIGHT//100*30, SCREEN_HEIGHT//100*70)
+    x = randint(SCREEN_WIDTH//100*10, SCREEN_WIDTH//100*90)
+    y = randint(SCREEN_HEIGHT//100*10, SCREEN_HEIGHT//100*90)
     r = randint(SCREEN_WIDTH//100*2, SCREEN_WIDTH//100*6)
     color = COLORS[randint(0, 5)]
     variant = randint(1, 4)
-    x_forward, y_forward = randint(1, 6), randint(1, 6)
     variant_back = randint(1, 2)
+    x_forward, y_forward = randint(1, 6), randint(1, 6)
+    x_backward, y_backward = randint(1, 6), randint(1, 6)
     back_flag = False
 
-    for i in range(800):
+    for i in range(200):
         screen.fill(BLACK)
         draw_point_counter(screen, counter, text_size,
                            point_counter_x, point_counter_y)
@@ -75,16 +76,14 @@ def new_ball():
             back_flag = True
             if y - r <= 5:
                 variant = 1
-                variant_back = randint(1, 2)
             elif x + r >= SCREEN_WIDTH-5:
                 variant = 2
-                variant_back = randint(1, 2)
             elif y + r >= SCREEN_HEIGHT-5:
                 variant = 3
-                variant_back = randint(1, 2)
             elif x - r <= 5:
                 variant = 4
-                variant_back = randint(1, 2)
+            variant_back = randint(1, 2)
+            x_backward, y_backward = randint(1, 6), randint(1, 6)
 
         if variant == 1:
             if not back_flag:
@@ -92,11 +91,11 @@ def new_ball():
                 y -= y_forward
             else:
                 if variant_back == 1:
-                    x -= x_forward
-                    y += y_forward
+                    x -= x_backward
+                    y += y_backward
                 elif variant_back == 2:
-                    x += x_forward
-                    y += y_forward
+                    x += x_backward
+                    y += y_backward
 
         elif variant == 2:
             if not back_flag:
@@ -104,11 +103,11 @@ def new_ball():
                 y += y_forward
             else:
                 if variant_back == 1:
-                    x -= x_forward
-                    y -= y_forward
+                    x -= x_backward
+                    y -= y_backward
                 if variant_back == 2:
-                    x -= x_forward
-                    y += y_forward
+                    x -= x_backward
+                    y += y_backward
 
         elif variant == 3:
             if not back_flag:
@@ -116,11 +115,11 @@ def new_ball():
                 y += y_forward
             else:
                 if variant_back == 1:
-                    x += x_forward
-                    y -= y_forward
+                    x += x_backward
+                    y -= y_backward
                 if variant_back == 2:
-                    x -= x_forward
-                    y -= y_forward
+                    x -= x_backward
+                    y -= y_backward
 
         elif variant == 4:
             if not back_flag:
@@ -128,11 +127,11 @@ def new_ball():
                 y -= y_forward
             else:
                 if variant_back == 1:
-                    x += x_forward
-                    y += y_forward
+                    x += x_backward
+                    y += y_backward
                 if variant_back == 2:
-                    x += x_forward
-                    y -= y_forward
+                    x += x_backward
+                    y -= y_backward
         pygame.draw.circle(screen, color, (x, y), r)
         pygame.display.update()
 
