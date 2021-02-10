@@ -5,7 +5,7 @@ from random import randint
 pygame.init()
 
 # Display settings
-FPS = 30
+FPS = 60
 SCREEN_WIDTH = 1400
 SCREEN_HEIGHT = 900
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -116,8 +116,6 @@ def main():
                         y -= y_backward
             pygame.draw.circle(screen, color, (x, y), r)
             pygame.display.update()
-        pygame.display.update()
-        screen.fill(BLACK)
 
 
 def new_ball():
@@ -134,6 +132,10 @@ def new_ball():
     x_forward, y_forward = 1, 1
     x_backward, y_backward = 1, 1
     back_flag = False
+
+
+def move_ball():
+    pass
 
 
 def click(event_pos, true_x, true_y):
