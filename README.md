@@ -1,2 +1,2 @@
 # study
-its this projekt
+It is my learning directory
